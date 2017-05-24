@@ -15,6 +15,13 @@ app.all('*', function(req, res, next) {
        next();
 });
 
+let errAndguideMsg = {
+    err:'No Url Given',
+    guide:{
+        url:'Add the url <https://secret-mesa-38828.herokuapp.com/?url=> before your api',
+        eg:'https://secret-mesa-38828.herokuapp.com/?url=api.openweathermap.org/data/2.5/forecast?lat=17.4454897&lon=78.3919251&units=metric&APPID=e2de3fcf953c365ce224997245da6350'
+    }
+}
 
 app.get('/',(req,res,next)=>{
 
@@ -36,7 +43,7 @@ app.get('/',(req,res,next)=>{
 
     if(!urlPresent){
         console.log(' ********** : Url Blank');
-        res.data={err:'No Url Given'}
+        res.data = errAndguideMsg
         next();
     }
 
