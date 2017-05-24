@@ -17,10 +17,40 @@ app.all('*', function(req, res, next) {
 
 
 app.get('/',(req,res,next)=>{
-    var options = {
+
+    console.log(' ********** : req.query:',req.query);
+    console.log(' ********** : req.headers:',req.headers);
+
+    let reqHeaders = req.headers;
+
+
+    if(reqHeaders.host){
+        delete reqHeaders['host'];
+    }
+    if(reqHeaders.connection){
+        delete reqHeaders['connection'];
+    }
+    if(reqHeaders.accept){
+        delete reqHeaders['accept'];
+    }
+    if(reqHeaders.cookie){
+        delete reqHeaders['cookie'];
+    }
+
+    let urlPresent = req.query.url;
+
+    if(!urlPresent){
+        console.log(' ********** : Url Blank');
+        res.data={err:'No Url Given'}
+        next();
+    }
+
+    let options = {
         url: 'http://'+req.originalUrl.substring(6),
-        headers: req.headers
+        headers : reqHeaders
     };
+
+    console.log(' ********** : options:',options);
     request(options,(err,response,body)=>{
         if(!err){
             res.data = JSON.parse(body);
